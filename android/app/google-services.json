@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "868966437604",
+    "project_id": "flutterbloodbank-d54ae",
+    "storage_bucket": "flutterbloodbank-d54ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868966437604:android:131db2dffde6d1172a92f1",
+        "android_client_info": {
+          "package_name": "com.example.blood_bank_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnkIvAHZpD9GRC2EWUxLirDFNHAD6lFso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868966437604:android:84b4c6b76638785e2a92f1",
+        "android_client_info": {
+          "package_name": "com.example.firebase_crud"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnkIvAHZpD9GRC2EWUxLirDFNHAD6lFso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
