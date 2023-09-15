@@ -25,8 +25,6 @@ Future<void> handleBackgroudMessage(RemoteMessage message) async {
   print('Payload : ${message.data}');
   print("I am Alen");
 
-
-
 }
 
 
