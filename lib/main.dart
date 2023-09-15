@@ -23,6 +23,7 @@ Future<void> handleBackgroudMessage(RemoteMessage message) async {
   print('Title : ${message.notification?.title}');
   print('Body : ${message.notification?.body}');
   print('Payload : ${message.data}');
+  print("I am Alen");
 }
 
 
