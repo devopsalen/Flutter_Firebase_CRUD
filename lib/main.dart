@@ -24,6 +24,7 @@ Future<void> handleBackgroudMessage(RemoteMessage message) async {
   print('Body : ${message.notification?.body}');
   print('Payload : ${message.data}');
   print("I am Alen");
+
 }
 
 
