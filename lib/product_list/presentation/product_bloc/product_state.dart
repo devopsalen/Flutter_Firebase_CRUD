@@ -27,10 +27,10 @@ class ProductLoadedState extends ProductState {
   List<Object> get props => [];
 }
 
-class FoodErrorState extends ProductState {
+class ProductErrorState extends ProductState {
  final String message;
 
-  FoodErrorState({required this.message});
+  ProductErrorState({required this.message});
 
   @override
   List<Object> get props => [message];

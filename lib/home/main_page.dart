@@ -1,5 +1,6 @@
 import 'package:firebase_crud/instagram_clone/insta_homepage.dart';
 import 'package:firebase_crud/login_page/login.dart';
+import 'package:firebase_crud/product_list/product_homeScreen.dart';
 import 'package:firebase_crud/push_notification/screens/home.dart';
 import 'package:flutter/material.dart';
 
@@ -76,6 +77,18 @@ class _LandingPageState extends State<LandingPage> {
                             color: Colors.tealAccent,
 
                             child: const Center(child: Text("Login page"))),
+                      )),
+                  InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProductHomeScreen()));
+                      },
+                      child:  Center(
+                        child: Container(
+                            height: 30,
+                            width: 100,
+                            color: Colors.tealAccent,
+
+                            child: const Center(child: Text("Product list"))),
                       )),
                 ],
               )

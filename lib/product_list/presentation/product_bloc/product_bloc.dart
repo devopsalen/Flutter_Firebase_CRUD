@@ -7,8 +7,8 @@ import '../../domain/repositories/product_repository.dart';
 import 'product_event.dart';
 import 'product_state.dart';
 
-class FoodBloc extends Bloc<ProductEvent, ProductState> {
-  FoodBloc() : super(ProductInitialState()) {
+class ProductBloc extends Bloc<ProductEvent, ProductState> {
+  ProductBloc() : super(ProductInitialState()) {
     on<ProductEvent>((event, emit) async {
       emit(ProductLoadingState());
       try {
@@ -21,7 +21,7 @@ class FoodBloc extends Bloc<ProductEvent, ProductState> {
           emit(ProductLoadedState(productModel: productscreen));
         }
       } catch (e) {
-        emit(FoodErrorState(message: e.toString()));
+        emit(ProductErrorState(message: e.toString()));
       }
     });
   }
