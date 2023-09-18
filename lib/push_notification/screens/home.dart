@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class PushHomePage extends StatefulWidget {
   const PushHomePage({Key? key}) : super(key: key);
+  static const route = '/notification-screen';
 
   @override
   State<PushHomePage> createState() => _PushHomePageState();
@@ -10,22 +11,21 @@ class PushHomePage extends StatefulWidget {
 
 class _PushHomePageState extends State<PushHomePage> {
 
-  // Future<void> handleBackgroudMessage(RemoteMessage message) async {
-  //   print('Title : ${message.notification?.title}');
-  //   print('Body : ${message.notification?.body}');
-  //   print('Payload : ${message.data}');
-  // }
-
   @override
   Widget build(BuildContext context) {
+
+    final message = ModalRoute.of(context)!.settings.arguments as RemoteMessage;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Push Notification'),
       ),
-      body: Column(
+      body: const Column(
         children: [
           Text('Firebase FCM Token'),
           Text('Firebase FCM Token'),
+          // Text('${message.notification!.title ?? "Empty"}'),
+          // Text('${message.notification!.body ?? "Empty"} '),
         ],
       ),
     );

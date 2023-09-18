@@ -1,4 +1,5 @@
 
+import 'package:firebase_crud/main.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirebaseAPI{
@@ -16,6 +17,6 @@ class FirebaseAPI{
     await _firebaseMessaging.requestPermission();
     final fCMToken = await _firebaseMessaging.getToken();
     print('Token : $fCMToken');
-    print("Sample message1");
+    initPushNotification();
   }
 }

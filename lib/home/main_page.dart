@@ -1,3 +1,5 @@
+import 'package:firebase_crud/instagram_clone/insta_homepage.dart';
+import 'package:firebase_crud/login_page/login.dart';
 import 'package:firebase_crud/push_notification/screens/home.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +13,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,7 +39,7 @@ class _LandingPageState extends State<LandingPage> {
                       )),
                   InkWell(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PushHomePage()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => PushHomePage()));
                       },
                       child:  Center(
                         child: Container(
@@ -47,18 +50,36 @@ class _LandingPageState extends State<LandingPage> {
                       )),
                   InkWell(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const InstagramHomepage()));
                       },
                       child:  Center(
                         child: Container(
                             height: 30,
                             width: 100,
                             color: Colors.tealAccent,
-                            child: const Center(child: Text("Blood Bank"))),
+                            child: const Center(child: Text("Instagram"))),
+                      )),
+                ],
+              ),
+              SizedBox(height: 30,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
+                      },
+                      child:  Center(
+                        child: Container(
+                            height: 30,
+                            width: 100,
+                            color: Colors.tealAccent,
+                            child: const Center(child: Text("Login page"))),
                       )),
                 ],
               )
             ],
+
           ),
         ),
       ),

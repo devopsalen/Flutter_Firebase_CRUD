@@ -5,16 +5,19 @@ import 'package:firebase_crud/home/main_page.dart';
 import 'package:firebase_crud/push_notification/screens/home.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'blood_bank/screens/add.dart';
 import 'blood_bank/screens/home.dart';
 
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseAPI().initNotifications();
-  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  await FirebaseMessaging.instance.setAutoInitEnabled(true); ///intialize tapping on notification
   FirebaseMessaging.onBackgroundMessage(handleBackgroudMessage);
   runApp(const MyApp());
 }
@@ -27,6 +30,25 @@ Future<void> handleBackgroudMessage(RemoteMessage message) async {
 
 }
 
+void handleMessage(RemoteMessage? message)
+{
+  if(message == null) return;
+  navigatorKey.currentState?.pushNamed(PushHomePage.route,
+  arguments: message);
+}
+
+Future initPushNotification() async {
+  FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
+  FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
+  //FirebaseMessaging.onBackgroundMessage(handleBackgroudMessage);
+}
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -34,19 +56,29 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      routes: {
-        '/' : (context) => const LandingPage(),
-        '/home' : (context) => const HomePage(),
-        '/add': (context) => const AddUser(),
-        // '/update' : (context) => UpdateUser(name: '',) err
-      },
-      initialRoute: '/',
+    return ScreenUtilInit(
+      designSize: const Size(414, 736),
+      minTextAdapt: true,
+      builder: (_ , child) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          navigatorKey: navigatorKey,
+
+          routes: {
+            '/' : (context) => const LandingPage(),
+            '/home' : (context) => const HomePage(),
+            '/add': (context) => const AddUser(),
+            PushHomePage.route: (context) => PushHomePage()
+            // '/update' : (context) => UpdateUser(name: '',) err
+
+          },
+          initialRoute: '/',
+        );
+      }
     );
   }
 }
