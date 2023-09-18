@@ -7,12 +7,13 @@ import '../model/productModel.dart';
 
 class Provider {
   /// food list
-  Future<List<ProductModel>> getFooddetails() async {
+  Future<ProductModel> getProductdetails() async {
     try {
       print("Loading from api");
       var res = await RestAPI().post(ServerAddresses.productmenulist);
       print(res);
-      return productModelFromMap(res);
+      return productModelFromJson(res);
+      // return productModelFromJson(res);
     } on RestException catch (e) {
       throw e.message;
     }

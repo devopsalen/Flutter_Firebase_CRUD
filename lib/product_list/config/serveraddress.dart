@@ -3,6 +3,6 @@ class ServerAddresses{
   static const serverAddress = 'https://dummyjson.com/' ;
 
 
-  static const productmenulist1 = '${serverAddress}products';
+  static const productmenulist = '${serverAddress}products';
 
 }
