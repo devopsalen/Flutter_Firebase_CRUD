@@ -74,6 +74,7 @@ class _LandingPageState extends State<LandingPage> {
                             height: 30,
                             width: 100,
                             color: Colors.tealAccent,
+
                             child: const Center(child: Text("Login page"))),
                       )),
                 ],
