@@ -1,9 +1,10 @@
 import 'package:firebase_crud/instagram_clone/insta_homepage.dart';
-import 'package:firebase_crud/login_page/login.dart';
 import 'package:firebase_crud/push_notification/screens/home.dart';
 import 'package:flutter/material.dart';
 
 import '../blood_bank/screens/home.dart';
+import '../login_page/login.dart';
+
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -75,6 +76,17 @@ class _LandingPageState extends State<LandingPage> {
                             width: 100,
                             color: Colors.tealAccent,
                             child: const Center(child: Text("Login page"))),
+                      )),
+                  InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
+                      },
+                      child:  Center(
+                        child: Container(
+                            height: 30,
+                            width: 100,
+                            color: Colors.tealAccent,
+                            child: const Center(child: Text("Product detail"))),
                       )),
                 ],
               )
