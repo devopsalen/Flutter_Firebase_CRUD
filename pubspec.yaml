@@ -46,6 +46,7 @@ dependencies:
   http_parser: any
   fluttertoast: any
   cached_network_image: any
+  carousel_slider: ^4.2.1
 
 
 

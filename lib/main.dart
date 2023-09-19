@@ -2,13 +2,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crud/common/firebase_api.dart';
 import 'package:firebase_crud/home/main_page.dart';
+import 'package:firebase_crud/product_list/presentation/product_bloc/product_event.dart';
 import 'package:firebase_crud/push_notification/screens/home.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'blood_bank/screens/add.dart';
 import 'blood_bank/screens/home.dart';
+import 'product_list/presentation/product_bloc/product_bloc.dart';
 
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -60,23 +63,29 @@ class MyApp extends StatelessWidget {
       designSize: const Size(414, 736),
       minTextAdapt: true,
       builder: (_ , child) {
-        return MaterialApp(
-          title: 'Flutter Demo',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => ProductBloc()..add(FetchProductEvent()),
+            ),
+          ],
+          child: MaterialApp(
+            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            navigatorKey: navigatorKey,
+
+            routes: {
+              '/' : (context) => const LandingPage(),
+              '/home' : (context) => const HomePage(),
+              '/add': (context) => const AddUser(),
+              PushHomePage.route: (context) => PushHomePage()
+              // '/update' : (context) => UpdateUser(name: '',) err
+
+            },
+            initialRoute: '/',
           ),
-          navigatorKey: navigatorKey,
-
-          routes: {
-            '/' : (context) => const LandingPage(),
-            '/home' : (context) => const HomePage(),
-            '/add': (context) => const AddUser(),
-            PushHomePage.route: (context) => PushHomePage()
-            // '/update' : (context) => UpdateUser(name: '',) err
-
-          },
-          initialRoute: '/',
         );
       }
     );

@@ -29,8 +29,9 @@ class RestAPI {
     print('Api Post, url $url  and ${json.encode(params)}');
     T responseJson;
     try {
-      final response = await http.post(Uri.parse(url),
-          body: utf8.encode(json.encode(params)),
+      final response = await http.get(Uri.parse(url),
+          // body: utf8.encode(json.encode(params)),
+          /// the above line is required only for post method
           headers: {
             "Accept": "application/json",
             'Content-type': 'application/json',

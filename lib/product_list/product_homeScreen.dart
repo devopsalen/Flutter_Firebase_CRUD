@@ -1,5 +1,8 @@
+import 'package:firebase_crud/product_list/model/productModel.dart';
+import 'package:firebase_crud/product_list/product_detailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'presentation/product_bloc/product_bloc.dart';
 import 'presentation/product_bloc/product_event.dart';
@@ -13,41 +16,59 @@ class ProductHomeScreen extends StatefulWidget {
 }
 
 class _ProductHomeScreenState extends State<ProductHomeScreen> {
+  TextEditingController search = TextEditingController();
+  List<Product> _filteredProducts = [];
+  List<Product> _allProducts = [];
+
+
+  void filterSearchResults(String query) {
+    setState(() {
+      _filteredProducts = _allProducts
+          .where((products) => products.title.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+
+
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => ProductBloc()..add(FetchProductEvent()),
-          ),
-        ],
-      child: Scaffold(
-        body: SafeArea(
-          child: RefreshIndicator(
-            color: Colors.pink,
-            onRefresh: () async {
-              final recentBloc =
-              BlocProvider.of<ProductBloc>(
-                  context);
-              recentBloc.add(FetchProductEvent());
-              // Navigator.pushReplacement(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (BuildContext context) => super.widget));
-            },
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
+    return Scaffold(
+      body: SafeArea(
+        child: RefreshIndicator(
+          color: Colors.pink,
+          onRefresh: () async {
+            final recentBloc =
+            BlocProvider.of<ProductBloc>(
+                context);
+            recentBloc.add(FetchProductEvent());
+            // Navigator.pushReplacement(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (BuildContext context) => super.widget));
+          },
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
+                  if (state is ProductLoadingState) {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.pink,
+                        ));
+                  }
+                  else if (state is ProductLoadedState) {
+                    _allProducts = state.productModel.products;
+                    print("printing list");
+                    // print(_filteredProducts[2].title);
+                    print(_filteredProducts.length);
+                    print(_allProducts.length);
 
-              child: Column(
-                children: [
-                  BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
-                    if (state is ProductLoadingState) {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.pink,
-                          ));
-                    }
-                    else if (state is ProductLoadedState) {
-                      return Column(
+                    return SingleChildScrollView(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
@@ -79,20 +100,10 @@ class _ProductHomeScreenState extends State<ProductHomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Hello Boys!",
+                                  "Mobile Mart",
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w600,
-                                    fontFamily: 'Poppins',
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 7,
-                                ),
-                                Text(
-                                  "What flavour do you want today?",
-                                  style: TextStyle(
-                                    fontSize: 16,
                                     fontFamily: 'Poppins',
                                   ),
                                 ),
@@ -101,29 +112,90 @@ class _ProductHomeScreenState extends State<ProductHomeScreen> {
                           ),
                           Container(
                             padding: const EdgeInsets.all(20),
-                            child: Text("resturant name",
+                            child: const Text("Recommended items...",
                               // state.foodModel.first.restaurantName,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: 'Poppins',
                               ),
                             ),
                           ),
-                        ],
-                      );
-                    }
-                    else if (state is ProductErrorState) {
-                      print(state.message);
-                      // Fluttertoast.showToast(msg: state.message);
-                      return Container();
-                    } else {
-                      return Container();
-                    }
-                  }),
+                          Container(
+                            padding: const EdgeInsets.all(20),
+                            child: TextField(
+                              onChanged: (value){
 
-                ],
-              ),
+                                  print("value");
+                                  print(value);
+                                  filterSearchResults(value,);
+
+                              },
+                              controller: search,
+                              decoration: const InputDecoration(
+                                labelText: "Search",
+                                hintText: "search product here",
+                                prefixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                                  )
+                              ),
+                            )
+                          ),
+                       _filteredProducts.isEmpty||search.text.isEmpty?
+                       ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount:  state.productModel.products.length,
+                              itemBuilder: (context, index){
+
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage( state.productModel.products[index].thumbnail),
+                                ),
+                                title: Text( state.productModel.products[index].title),
+                                subtitle: Text( state.productModel.products[index].price.toString()),
+                                onTap: (){
+                                  Fluttertoast.showToast(msg:  state.productModel.products[index].title);
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => ProductDetailPage(productmodel :  state.productModel.products[index]) ));
+                                },
+                              );
+                              }):
+                       ListView.builder(
+                           physics: const NeverScrollableScrollPhysics(),
+                           shrinkWrap: true,
+                           itemCount: _filteredProducts.length,
+                           itemBuilder: (context, index){
+
+
+                             return ListTile(
+                               leading: CircleAvatar(
+                                 backgroundImage: NetworkImage(_filteredProducts[index].thumbnail),
+                               ),
+                               title: Text(_filteredProducts[index].title),
+                               subtitle: Text(_filteredProducts[index].price.toString()),
+                               onTap: (){
+                                 Fluttertoast.showToast(msg: _filteredProducts[index].title);
+                                 Navigator.push(context, MaterialPageRoute(
+                                     builder: (context) => ProductDetailPage(productmodel : _filteredProducts[index]) ));
+                               },
+                             );
+                           })
+                        ],
+                      ),
+                    );
+                  }
+                  else if (state is ProductErrorState) {
+                    print(state.message);
+                    // Fluttertoast.showToast(msg: state.message);
+                    return Container();
+                  } else {
+                    return Container();
+                  }
+                }),
+
+              ],
             ),
           ),
         ),
