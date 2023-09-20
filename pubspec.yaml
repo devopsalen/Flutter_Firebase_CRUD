@@ -47,6 +47,7 @@ dependencies:
   fluttertoast: any
   cached_network_image: any
   carousel_slider: ^4.2.1
+  video_player: ^2.7.2
 
 
 
