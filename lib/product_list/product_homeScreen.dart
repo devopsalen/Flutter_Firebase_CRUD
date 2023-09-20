@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_crud/product_list/model/productModel.dart';
 import 'package:firebase_crud/product_list/product_detailScreen.dart';
 import 'package:flutter/material.dart';
@@ -19,19 +21,22 @@ class _ProductHomeScreenState extends State<ProductHomeScreen> {
   TextEditingController search = TextEditingController();
   List<Product> _filteredProducts = [];
   List<Product> _allProducts = [];
-
+  bool noElement = false;
 
   void filterSearchResults(String query) {
     setState(() {
       _filteredProducts = _allProducts
-          .where((products) => products.title.toLowerCase().contains(query.toLowerCase()))
+          .where((products) =>
+              products.title.toLowerCase().contains(query.toLowerCase()))
           .toList();
 
-
+      if (_filteredProducts.isEmpty) {
+        noElement = true;
+      } else {
+        noElement = false;
+      }
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +45,7 @@ class _ProductHomeScreenState extends State<ProductHomeScreen> {
         child: RefreshIndicator(
           color: Colors.pink,
           onRefresh: () async {
-            final recentBloc =
-            BlocProvider.of<ProductBloc>(
-                context);
+            final recentBloc = BlocProvider.of<ProductBloc>(context);
             recentBloc.add(FetchProductEvent());
             // Navigator.pushReplacement(
             //     context,
@@ -53,19 +56,19 @@ class _ProductHomeScreenState extends State<ProductHomeScreen> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
+                BlocBuilder<ProductBloc, ProductState>(
+                    builder: (context, state) {
                   if (state is ProductLoadingState) {
                     return const Center(
                         child: CircularProgressIndicator(
-                          color: Colors.pink,
-                        ));
-                  }
-                  else if (state is ProductLoadedState) {
+                      color: Colors.pink,
+                    ));
+                  } else if (state is ProductLoadedState) {
                     _allProducts = state.productModel.products;
-                    print("printing list");
+                    // print("printing list");
                     // print(_filteredProducts[2].title);
-                    print(_filteredProducts.length);
-                    print(_allProducts.length);
+                    // print(_filteredProducts.length);
+                    // print(_allProducts.length);
 
                     return SingleChildScrollView(
                       child: Column(
@@ -112,7 +115,8 @@ class _ProductHomeScreenState extends State<ProductHomeScreen> {
                           ),
                           Container(
                             padding: const EdgeInsets.all(20),
-                            child: const Text("Recommended items...",
+                            child: const Text(
+                              "Recommended items...",
                               // state.foodModel.first.restaurantName,
                               style: TextStyle(
                                 fontSize: 20,
@@ -122,79 +126,101 @@ class _ProductHomeScreenState extends State<ProductHomeScreen> {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.all(20),
-                            child: TextField(
-                              onChanged: (value){
-
-                                  print("value");
-                                  print(value);
-                                  filterSearchResults(value,);
-
-                              },
-                              controller: search,
-                              decoration: const InputDecoration(
-                                labelText: "Search",
-                                hintText: "search product here",
-                                prefixIcon: Icon(Icons.search),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                                  )
-                              ),
-                            )
-                          ),
-                       _filteredProducts.isEmpty||search.text.isEmpty?
-                       ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount:  state.productModel.products.length,
-                              itemBuilder: (context, index){
-
-                              return ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage( state.productModel.products[index].thumbnail),
-                                ),
-                                title: Text( state.productModel.products[index].title),
-                                subtitle: Text( state.productModel.products[index].price.toString()),
-                                onTap: (){
-                                  Fluttertoast.showToast(msg:  state.productModel.products[index].title);
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => ProductDetailPage(productmodel :  state.productModel.products[index]) ));
+                              padding: const EdgeInsets.all(20),
+                              child: TextField(
+                                onChanged: (value) {
+                                  filterSearchResults(
+                                    value,
+                                  );
                                 },
-                              );
-                              }):
-                       ListView.builder(
-                           physics: const NeverScrollableScrollPhysics(),
-                           shrinkWrap: true,
-                           itemCount: _filteredProducts.length,
-                           itemBuilder: (context, index){
-
-
-                             return ListTile(
-                               leading: CircleAvatar(
-                                 backgroundImage: NetworkImage(_filteredProducts[index].thumbnail),
-                               ),
-                               title: Text(_filteredProducts[index].title),
-                               subtitle: Text(_filteredProducts[index].price.toString()),
-                               onTap: (){
-                                 Fluttertoast.showToast(msg: _filteredProducts[index].title);
-                                 Navigator.push(context, MaterialPageRoute(
-                                     builder: (context) => ProductDetailPage(productmodel : _filteredProducts[index]) ));
-                               },
-                             );
-                           })
+                                controller: search,
+                                decoration: const InputDecoration(
+                                    labelText: "Search",
+                                    hintText: "search product here",
+                                    prefixIcon: Icon(Icons.search),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                    )),
+                              )),
+                          ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: search.text.isEmpty
+                                  ? state.productModel.products.length
+                                  : noElement == false
+                                      ? _filteredProducts.length
+                                      : 1,
+                              itemBuilder: (context, index) {
+                                if (search.text.isEmpty) {
+                                  return ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(state
+                                          .productModel
+                                          .products[index]
+                                          .thumbnail),
+                                    ),
+                                    title: Text(state
+                                        .productModel.products[index].title),
+                                    subtitle: Text(state
+                                        .productModel.products[index].price
+                                        .toString()),
+                                    onTap: () {
+                                      Fluttertoast.showToast(
+                                          msg: state.productModel
+                                              .products[index].title);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProductDetailPage(
+                                                      productmodel: state
+                                                          .productModel
+                                                          .products[index])));
+                                    },
+                                  );
+                                } else {
+                                  if (noElement == false) {
+                                    return ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            _filteredProducts[index].thumbnail),
+                                      ),
+                                      title:
+                                          Text(_filteredProducts[index].title),
+                                      subtitle: Text(_filteredProducts[index]
+                                          .price
+                                          .toString()),
+                                      onTap: () {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                _filteredProducts[index].title);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductDetailPage(
+                                                        productmodel:
+                                                            _filteredProducts[
+                                                                index])));
+                                      },
+                                    );
+                                  } else if (noElement == true) {
+                                    return const Center(
+                                        child: Text("No data found"));
+                                  }
+                                }
+                              })
                         ],
                       ),
                     );
-                  }
-                  else if (state is ProductErrorState) {
-                    print(state.message);
-                    // Fluttertoast.showToast(msg: state.message);
+                  } else if (state is ProductErrorState) {
+                    Fluttertoast.showToast(msg: state.message);
                     return Container();
                   } else {
                     return Container();
                   }
                 }),
-
               ],
             ),
           ),
