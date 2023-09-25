@@ -2,6 +2,7 @@
 import 'package:firebase_crud/hive_db/screen_home.dart';
 import 'package:firebase_crud/instagram_clone/insta_homepage.dart';
 import 'package:firebase_crud/login_page/login.dart';
+import 'package:firebase_crud/paytmSDK/paytm.dart';
 import 'package:firebase_crud/product_list/product_homeScreen.dart';
 import 'package:firebase_crud/push_notification/screens/home.dart';
 import 'package:firebase_crud/shared_pref/shared_pref.dart';
@@ -160,7 +161,18 @@ class _LandingPageState extends State<LandingPage> {
                 children: [
                   InkWell(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddStudent()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PaytmSDK()));
+                      },
+                      child:  Center(
+                        child: Container(
+                            height: 30,
+                            width: 100,
+                            color: Colors.tealAccent,
+                            child: const Center(child: Text("Paytm"))),
+                      )),
+                  InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ScreenHive()));
                       },
                       child:  Center(
                         child: Container(

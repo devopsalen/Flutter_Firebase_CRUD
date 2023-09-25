@@ -1,6 +1,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crud/common/firebase_api.dart';
+import 'package:firebase_crud/hive_db/db/models/data_model.dart';
 import 'package:firebase_crud/home/main_page.dart';
 import 'package:firebase_crud/product_list/presentation/product_bloc/product_event.dart';
 import 'package:firebase_crud/push_notification/screens/home.dart';
@@ -8,6 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'blood_bank/screens/add.dart';
 import 'blood_bank/screens/home.dart';
@@ -16,12 +18,17 @@ import 'product_list/presentation/product_bloc/product_bloc.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
-void main() async {
+Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseAPI().initNotifications();
   await FirebaseMessaging.instance.setAutoInitEnabled(true); ///intialize tapping on notification
   FirebaseMessaging.onBackgroundMessage(handleBackgroudMessage);
+
+  await Hive.initFlutter();
+  if(Hive.isAdapterRegistered(StudentModelAdapter().typeId)){
+    Hive.registerAdapter(StudentModelAdapter());
+  }
   runApp(const MyApp());
 }
 
