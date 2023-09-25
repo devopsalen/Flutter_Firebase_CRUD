@@ -5,14 +5,17 @@ import '../models/data_model.dart';
 
 ValueNotifier<List<StudentModel>> studentListNotifier = ValueNotifier([]);
 
-Future<void> addStudent(StudentModel value) async {
-  final studentDB = await Hive.openBox<StudentModel>('student_db');
-  final _id = await studentDB.add(value);
-  // print("returned ID : $_id");
-  value.id=_id;
-  studentListNotifier.value.add(value);
-
-  studentListNotifier.notifyListeners();
+Future<void> addStudent(StudentModel student) async {
+  try {
+    final studentDB = await Hive.openBox<StudentModel>('student_db');
+    student.id = DateTime.now().hashCode;
+    await studentDB.put(student.id, student);
+    studentListNotifier.value.add(student);
+    studentListNotifier.notifyListeners();
+  }
+  catch (e) {
+    print('Error adding student: $e');
+  }
 }
 
 Future<void> getAllStudents() async {
@@ -26,5 +29,6 @@ Future <void> deleteStudents(int id) async{
   final studentDB = await Hive.openBox<StudentModel>('student_db');
   await studentDB.delete(id);
   getAllStudents();
+
 
 }

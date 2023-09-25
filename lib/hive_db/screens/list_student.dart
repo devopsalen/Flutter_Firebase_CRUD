@@ -15,18 +15,24 @@ class ListStudent extends StatelessWidget {
         return ListView.separated(
           itemBuilder: (ctx,index){
             return ListTile(
-              title: Text('Name ${studentListNotifier[index].name} ID ${studentListNotifier[index].id}'),
+              title: Text('Name ${studentListNotifier[index].name} ID: ${studentListNotifier[index].id}'),
               subtitle: Text('Age ${studentListNotifier[index].age}'),
 
               trailing: IconButton(onPressed: (){
-                if(studentListNotifier[index].id != null){
-                  print(studentListNotifier[index].id);
-                  deleteStudents(studentListNotifier[index].id!);
-                }
-                else
-                  {
-                    print('Student id is null');
-                  }
+                print(studentListNotifier[index].name);
+                print(studentListNotifier[index].age);
+                print(studentListNotifier[index].id);
+
+                deleteStudents(studentListNotifier[index].id!);
+
+                // if(studentListNotifier[index].id != null){
+                //   print(studentListNotifier[index].id);
+                //   deleteStudents(studentListNotifier[index].id!);
+                // }
+                // else
+                //   {
+                //     print('Student id is null');
+                //   }
               }, icon: Icon(Icons.delete,color: Colors.red,)),
             );
           },
