@@ -26,7 +26,8 @@ Future <void> main() async {
   FirebaseMessaging.onBackgroundMessage(handleBackgroudMessage);
 
   await Hive.initFlutter();
-  if(Hive.isAdapterRegistered(StudentModelAdapter().typeId)){
+  if(!Hive.isAdapterRegistered(StudentModelAdapter().typeId))
+  {
     Hive.registerAdapter(StudentModelAdapter());
   }
   runApp(const MyApp());
