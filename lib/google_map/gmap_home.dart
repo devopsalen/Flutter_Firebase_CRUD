@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:geocoding/geocoding.dart';
 
 class GmapHomePage extends StatefulWidget {
   const GmapHomePage({Key? key}) : super(key: key);
@@ -12,8 +15,9 @@ class GmapHomePage extends StatefulWidget {
 
 class _GmapHomePageState extends State<GmapHomePage> {
 
-  String lat = "0.0";
-  String long = "0.0";
+  double lat = 0.0;
+  double long = 0.0;
+  String address = ""; // to store address
 
   String locationMessage = 'Current location of the user';
 
@@ -49,8 +53,8 @@ class _GmapHomePageState extends State<GmapHomePage> {
 
     Geolocator.getPositionStream(locationSettings: locationSettings)
     .listen((Position position) {
-      lat = position.latitude.toString();
-      long = position.longitude.toString();
+      lat = position.latitude;
+      long = position.longitude;
 
       setState(() {
         locationMessage = 'Latitude = $lat , Longitude = $long';
@@ -59,12 +63,32 @@ class _GmapHomePageState extends State<GmapHomePage> {
   }
 
 
-  Future<void> _openMap(String lat, String long) async {
+  Future<void> _openMap(double lat, double long) async {
     String googleURL = 'https://maps.google.com/maps/search/?api=1&query=$lat,$long';
     await canLaunchUrlString(googleURL)
     ?  await launchUrlString(googleURL)
         : throw 'Could not launch $googleURL';
 
+  }
+
+  Future<void> _getPlace() async {
+    List<Placemark> newPlace = await placemarkFromCoordinates(lat, long );
+
+    // this is all you need
+    Placemark placeMark  = newPlace[0];
+    String? name = placeMark.name;
+    String? subLocality = placeMark.subLocality;
+    String? locality = placeMark.locality;
+    String? administrativeArea = placeMark.administrativeArea;
+    String? postalCode = placeMark.postalCode;
+    String? country = placeMark.country;
+    String? address = "${name}, ${subLocality}, ${locality}, ${administrativeArea} ${postalCode}, ${country}";
+
+    print(address);
+
+    setState(() {
+      address = address; // update _address
+    });
   }
 
 
@@ -89,8 +113,8 @@ class _GmapHomePageState extends State<GmapHomePage> {
               ElevatedButton(
                   onPressed: () {
                     getCurrentLocation().then((value) {
-                      lat = '${value.latitude}';
-                      long = '${value.longitude}';
+                      lat = value.latitude;
+                      long = value.longitude;
                       setState(() {
                         locationMessage = 'Latitude = $lat , Longitude = $long';
                       });
@@ -103,7 +127,14 @@ class _GmapHomePageState extends State<GmapHomePage> {
               ElevatedButton(onPressed: (){
                 _openMap(lat,long);
               },
-                  child: const Text('Open google map'))
+                  child: const Text('Open google map')),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(onPressed: (){
+                _getPlace();
+              },
+                  child: const Text('get address'))
 
             ],
           ),
