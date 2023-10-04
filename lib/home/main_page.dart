@@ -1,4 +1,5 @@
 
+import 'package:firebase_crud/google_map/gmap_home.dart';
 import 'package:firebase_crud/hive_db/screen_home.dart';
 import 'package:firebase_crud/instagram_clone/insta_homepage.dart';
 import 'package:firebase_crud/login_page/login.dart';
@@ -180,6 +181,17 @@ class _LandingPageState extends State<LandingPage> {
                             width: 100,
                             color: Colors.tealAccent,
                             child: const Center(child: Text("Hive DB"))),
+                      )),
+                  InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const GmapHomePage()));
+                      },
+                      child:  Center(
+                        child: Container(
+                            height: 30,
+                            width: 100,
+                            color: Colors.tealAccent,
+                            child: const Center(child: Text("Google map"))),
                       )),
                 ],
               )
