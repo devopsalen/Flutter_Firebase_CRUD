@@ -4,6 +4,7 @@ import 'package:firebase_crud/hive_db/screen_home.dart';
 import 'package:firebase_crud/instagram_clone/insta_homepage.dart';
 import 'package:firebase_crud/language_translation/language_home.dart';
 import 'package:firebase_crud/login_page/login.dart';
+import 'package:firebase_crud/main.dart';
 import 'package:firebase_crud/paytmSDK/paytm.dart';
 import 'package:firebase_crud/product_list/product_homeScreen.dart';
 import 'package:firebase_crud/push_notification/screens/home.dart';
@@ -210,6 +211,17 @@ class _LandingPageState extends State<LandingPage> {
                             width: 100,
                             color: Colors.tealAccent,
                             child: const Center(child: Text("Language trans"))),
+                      )),
+                  InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Dashboard()));
+                      },
+                      child:  Center(
+                        child: Container(
+                            height: 30,
+                            width: 100,
+                            color: Colors.tealAccent,
+                            child: const Center(child: Text("Choose lang"))),
                       )),
 
                 ],

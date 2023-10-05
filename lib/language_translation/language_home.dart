@@ -1,3 +1,4 @@
+import 'package:firebase_crud/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -9,6 +10,10 @@ class LanguageHomePage extends StatefulWidget {
 }
 
 class _LanguageHomePageState extends State<LanguageHomePage> {
+
+  //
+  // final MyAppState app1 = MyAppState();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +27,7 @@ class _LanguageHomePageState extends State<LanguageHomePage> {
           children: [
             Text(AppLocalizations.of(context).helloWorld),
             ElevatedButton(onPressed: (){
-              changeLang();
+              // changeLang();
             }, child: Text("Change language"))
           ],
         ),
@@ -31,6 +36,7 @@ class _LanguageHomePageState extends State<LanguageHomePage> {
   }
 
   void changeLang() {
+
     // print(object);
   }
 }

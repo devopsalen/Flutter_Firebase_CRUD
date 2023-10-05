@@ -33,7 +33,7 @@ Future <void> main() async {
   {
     Hive.registerAdapter(StudentModelAdapter());
   }
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 Future<void> handleBackgroudMessage(RemoteMessage message) async {
@@ -64,10 +64,18 @@ Future initPushNotification() async {
 
 
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => MyAppState();
+
+}
+
+class MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  String lang = "ml";
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -88,16 +96,17 @@ class MyApp extends StatelessWidget {
             navigatorKey: navigatorKey,
 
             routes: {
-              '/' : (context) => const LandingPage(),
+              // '/' : (context) => const Dashboard(),
+              '/' : (context) => const LandingPage(),   //change this back
               '/home' : (context) => const HomePage(),
               '/add': (context) => const AddUser(),
               PushHomePage.route: (context) => PushHomePage()
-              // '/update' : (context) => UpdateUser(name: '',) err
 
             },
             initialRoute: '/',
 
-            locale: Locale('ml'),
+            locale: Locale(lang),
+            // locale: Locale('ml'),
             localizationsDelegates: [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -114,4 +123,36 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+class Dashboard extends StatefulWidget {
+  const Dashboard({Key? key}) : super(key: key);
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+
+      ),
+      body:Column(
+        children: [
+          TextButton(
+            child: Text("Change language"),
+            onPressed: () {
+
+            },
+          ),
+          // Text("language : $lang");
+
+        ],
+      ),
+    );
+  }
+}
+
 
