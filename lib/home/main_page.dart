@@ -2,6 +2,7 @@
 import 'package:firebase_crud/google_map/gmap_home.dart';
 import 'package:firebase_crud/hive_db/screen_home.dart';
 import 'package:firebase_crud/instagram_clone/insta_homepage.dart';
+import 'package:firebase_crud/language_translation/language_home.dart';
 import 'package:firebase_crud/login_page/login.dart';
 import 'package:firebase_crud/paytmSDK/paytm.dart';
 import 'package:firebase_crud/product_list/product_homeScreen.dart';
@@ -193,6 +194,24 @@ class _LandingPageState extends State<LandingPage> {
                             color: Colors.tealAccent,
                             child: const Center(child: Text("Google map"))),
                       )),
+                ],
+              ),
+              const SizedBox(height: 30,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LanguageHomePage()));
+                      },
+                      child:  Center(
+                        child: Container(
+                            height: 30,
+                            width: 100,
+                            color: Colors.tealAccent,
+                            child: const Center(child: Text("Language trans"))),
+                      )),
+
                 ],
               )
             ],

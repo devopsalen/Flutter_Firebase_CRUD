@@ -8,12 +8,15 @@ import 'package:firebase_crud/push_notification/screens/home.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'blood_bank/screens/add.dart';
 import 'blood_bank/screens/home.dart';
 import 'product_list/presentation/product_bloc/product_bloc.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -93,6 +96,18 @@ class MyApp extends StatelessWidget {
 
             },
             initialRoute: '/',
+
+            locale: Locale('ml'),
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate
+            ],
+            supportedLocales: [
+              Locale('en'),
+              Locale('ml')
+            ],
           ),
         );
       }
