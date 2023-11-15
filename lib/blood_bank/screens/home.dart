@@ -88,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               IconButton(
                                 onPressed: () {
+
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => UpdateUser(
                                           name: donorsnap['name'],

@@ -13,8 +13,8 @@ class _PushHomePageState extends State<PushHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-    final message = ModalRoute.of(context)!.settings.arguments as RemoteMessage;
+    ///uncomment this when needed
+    // final message = ModalRoute.of(context)!.settings.arguments as RemoteMessage;
 
     return Scaffold(
       appBar: AppBar(

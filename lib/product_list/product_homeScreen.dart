@@ -45,8 +45,8 @@ class _ProductHomeScreenState extends State<ProductHomeScreen> {
         child: RefreshIndicator(
           color: Colors.pink,
           onRefresh: () async {
-            final recentBloc = BlocProvider.of<ProductBloc>(context);
-            recentBloc.add(FetchProductEvent());
+            final recentBloc = BlocProvider.of<ProductBloc>(context); /// this is for reloading purpose only
+            recentBloc.add(FetchProductEvent()); /// you can remove this if refresh indicator is not needed
             // Navigator.pushReplacement(
             //     context,
             //     MaterialPageRoute(
@@ -63,7 +63,8 @@ class _ProductHomeScreenState extends State<ProductHomeScreen> {
                         child: CircularProgressIndicator(
                       color: Colors.pink,
                     ));
-                  } else if (state is ProductLoadedState) {
+                  }
+                  else if (state is ProductLoadedState) {
                     _allProducts = state.productModel.products;
                     // print("printing list");
                     // print(_filteredProducts[2].title);
@@ -214,10 +215,12 @@ class _ProductHomeScreenState extends State<ProductHomeScreen> {
                         ],
                       ),
                     );
-                  } else if (state is ProductErrorState) {
+                  }
+                  else if (state is ProductErrorState) {
                     Fluttertoast.showToast(msg: state.message);
                     return Container();
-                  } else {
+                  }
+                  else {
                     return Container();
                   }
                 }),

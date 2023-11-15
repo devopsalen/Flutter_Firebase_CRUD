@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -84,6 +85,7 @@ class _GmapHomePageState extends State<GmapHomePage> {
     String? country = placeMark.country;
     String? address = "${name}, ${subLocality}, ${locality}, ${administrativeArea} ${postalCode}, ${country}";
 
+    Fluttertoast.showToast(msg: address);
     print(address);
 
     setState(() {

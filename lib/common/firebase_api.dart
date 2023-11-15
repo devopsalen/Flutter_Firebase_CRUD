@@ -13,6 +13,7 @@ class FirebaseAPI{
   //   print('Payload : ${message.data}');
   // }
 
+
   initNotifications() async {
     await _firebaseMessaging.requestPermission();
     final fCMToken = await _firebaseMessaging.getToken();
