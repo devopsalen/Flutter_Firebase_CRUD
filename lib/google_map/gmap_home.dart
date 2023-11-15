@@ -63,7 +63,6 @@ class _GmapHomePageState extends State<GmapHomePage> {
     });
   }
 
-
   Future<void> _openMap(double lat, double long) async {
     String googleURL = 'https://maps.google.com/maps/search/?api=1&query=$lat,$long';
     await canLaunchUrlString(googleURL)
